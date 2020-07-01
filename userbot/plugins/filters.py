@@ -65,7 +65,7 @@ async def on_snip(event):
                 last_triggered_filters[event.chat_id].remove(name)
 
 
-@borg.on(admin_cmd("savefilter(.*)"))
+@borg.on(admin_cmd("savefilter(!*)"))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
     msg = await event.get_reply_message()
@@ -97,7 +97,7 @@ async def on_snip_list(event):
         for a_snip in all_snips:
             OUT_STR += f"👉 {a_snip.keyword} \n"
     else:
-        OUT_STR = "No Filters. Start Saving using `.savefilter`"
+        OUT_STR = "No Filters. Start Saving using `!savefilter`"
     if len(OUT_STR) > 4096:
         with io.BytesIO(str.encode(OUT_STR)) as out_file:
             out_file.name = "filters.text"
@@ -114,7 +114,7 @@ async def on_snip_list(event):
         await event.edit(OUT_STR)
 
 
-@borg.on(admin_cmd("clearfilter (.*)"))
+@borg.on(admin_cmd("clearfilter (!*)"))
 async def on_snip_delete(event):
     name = event.pattern_match.group(1)
     remove_filter(event.chat_id, name)
